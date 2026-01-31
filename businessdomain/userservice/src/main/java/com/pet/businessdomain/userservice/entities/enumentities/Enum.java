@@ -1,66 +1,96 @@
-package com.pet.businessdomain.personservice.entities.enumentities;
+package com.pet.businessdomain.userservice.entities.enumentities;
 
 public class Enum {
 
     public enum CurrentSituation {
-        HIGH_SCHOOL,
-        VOCATIONAL_TRAINING,
-        UNIVERSITY,
-        UNEMPLOYED,
-        WORKING
-    }
-    public enum FamilySituation {
-        STABLE_FAMILY,
-        SINGLE_PARENT,
-        ECONOMIC_DIFFICULTY,
-        NO_FAMILY_SUPPORT
-    }
-    public enum EducationLevel {
-        NONE,
-        BASIC,
-        SECONDARY,
-        VOCATIONAL,
-        UNIVERSITY
-    }
-    public enum AcademicPerformance {
-        LOW,
-        AVERAGE,
-        HIGH
-    }
-    public enum CareerInterest {
-        TECHNOLOGY,
-        HEALTH,
-        ARTS,
-        BUSINESS,
-        EDUCATION,
-        SPORTS,
-        OTHER
-    }
-    public enum Aspiration {
-        UNIVERSITY,
-        VOCATIONAL_TRAINING,
-        EMPLOYMENT,
-        ENTREPRENEURSHIP
-    }
-    public enum AvailableTime {
-        FULL_TIME,
-        PART_TIME,
-        LIMITED
-    }
-    public enum EconomicSupport {
-        NONE,
-        PARTIAL_SUPPORT,
-        FULL_SUPPORT
-    }
-    public enum GameDifficulty {
-        EASY,
-        REALISTIC,
-        HARD
-    }
-    public enum GameFocus {
-        NARRATIVE,
-        STRATEGIC,
-        ECONOMIC
+        high_school,
+        vocational_training,
+        university,
+        unemployed,
+        working
     }
 
+    public enum FamilySituation {
+        stable_family,
+        working_family,
+        difficult_situation
+    }
+
+    public enum EducationLevel {
+        none,
+        basic,
+        secondary,
+        vocational,
+        technical,
+        highschool,
+        university
+    }
+
+    public enum AcademicPerformance {
+        low,
+        average,
+        high,
+        excellent
+    }
+
+    public enum CareerInterest {
+        technology,
+        health,
+        arts,
+        business,
+        education,
+        sports,
+        construction,
+        creative,
+        social,
+        science,
+        hospitality,
+        other
+    }
+
+    public enum Aspiration {
+        university,
+        vocational_training,
+        employment,
+        entrepreneurship
+    }
+
+    public enum AvailableTime {
+        full_time,
+        part_time,
+        limited
+    }
+
+    public enum EconomicSupport {
+        none,
+        partial_support,
+        full_support
+    }
+
+    public enum GameDifficulty {
+        easy,
+        realistic,
+        hard
+    }
+
+    public enum GameFocus {
+        narrative,
+        strategic,
+        economic
+    }
+    public enum Gender {
+        male,
+        female,
+        nonbinary,
+        unspecified
+    }
+
+
+    public enum ProgressLevel {
+        LEVEL_1,
+        LEVEL_2,
+        LEVEL_3,
+        LEVEL_4,
+        LEVEL_5
+    }
 }

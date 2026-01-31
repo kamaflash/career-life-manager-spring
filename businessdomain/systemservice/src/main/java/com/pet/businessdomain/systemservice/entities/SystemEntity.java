@@ -1,11 +1,9 @@
 package com.pet.businessdomain.systemservice.entities;
 
-import com.pet.businessdomain.systemservice.entities.enumentities.Enum;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "systems")

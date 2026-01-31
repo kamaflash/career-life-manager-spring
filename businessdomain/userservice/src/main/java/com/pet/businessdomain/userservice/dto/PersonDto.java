@@ -2,31 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.pet.businessdomain.personservice.dto;
+package com.pet.businessdomain.userservice.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
-import com.pet.businessdomain.personservice.entities.CharacterExpenses;
-import com.pet.businessdomain.personservice.entities.enumentities.Enum;
-import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
+import com.pet.businessdomain.userservice.entities.CharacterExpenses;
+import com.pet.businessdomain.userservice.entities.enumentities.Enum;
 import lombok.Data;
 
-/**
- *
- * @author Pc
- */
 @Data
 public class PersonDto {
 
     private Long id;
     private Long uid;
+
     // ===== IDENTIDAD =====
     private String fullName;
+    private String birthDate;
     private Integer age;
     private String city;
+
+    private Enum.Gender gender;
+
     private LocalDateTime createdAt;
 
     // ===== SITUACIÓN VITAL =====
@@ -38,6 +36,7 @@ public class PersonDto {
     private Enum.EducationLevel educationLevel;
     private String educationField;
     private String educationSpecialization;
+
     private Enum.AcademicPerformance academicPerformance;
     private List<String> educationGaps;
 
@@ -56,15 +55,19 @@ public class PersonDto {
     private List<String> incomeSources;
     private Double savings;
     private Double debts;
+
     private CharacterExpenses expenses;
 
-    // ===== RETOS Y APOYO =====
+    // ===== RETOS, APOYO Y METAS =====
     private List<String> challenges;
     private List<String> supportSystem;
 
-    // ===== CONFIGURACIÓN DE JUEGO =====
-    private Enum.GameDifficulty gameDifficulty;
-    private Enum.GameFocus gameFocus;
+    private List<String> longTermGoals;
+    private List<String> shortTermGoals;
 
 
+    private Integer academicXp;
+    private Integer workXp;
+    private Enum.ProgressLevel academicLevel;
+    private Enum.ProgressLevel workLevel;
 }

@@ -1,4 +1,4 @@
-package com.pet.businessdomain.personservice.entities;
+package com.pet.businessdomain.userservice.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

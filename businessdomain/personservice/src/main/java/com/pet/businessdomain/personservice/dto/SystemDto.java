@@ -1,10 +1,8 @@
-package com.pet.businessdomain.systemservice.dto;
+package com.pet.businessdomain.personservice.dto;
+
+import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import com.pet.businessdomain.systemservice.entities.enumentities.Enum;
-import lombok.Data;
 
 @Data
 public class SystemDto {
