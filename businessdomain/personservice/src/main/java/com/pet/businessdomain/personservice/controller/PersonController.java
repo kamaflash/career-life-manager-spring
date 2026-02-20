@@ -1,9 +1,13 @@
 
 package com.pet.businessdomain.personservice.controller;
 
+import com.pet.businessdomain.personservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.personservice.dto.FormationDto;
 import com.pet.businessdomain.personservice.dto.PersonDto;
 import com.pet.businessdomain.personservice.dto.SystemDto;
 import com.pet.businessdomain.personservice.entities.Person;
+import com.pet.businessdomain.personservice.entities.enumentities.Enum;
+import com.pet.businessdomain.personservice.entities.enumentities.EnumFormation;
 import com.pet.businessdomain.personservice.exceptions.BusinessRuleException;
 
 import java.net.UnknownHostException;
@@ -37,6 +41,8 @@ import com.pet.businessdomain.personservice.services.PersonService;
 @RequestMapping("/api/persons")
 public class PersonController {
     private static final int SIZE = 5;
+    private static final Long VOCATIONAL_TRAINING = Long.valueOf(171);
+    private static final Long HIGH_SCHOOL = Long.valueOf(172);
 
     @Autowired
     private PersonService personService;
@@ -91,18 +97,46 @@ public class PersonController {
             return personDto;
 
     }
+    @GetMapping("/id/{id}")
+    public PersonDto getPersonByID(@PathVariable(name="id") Long id) throws BusinessRuleException {
+        Optional<Person> optPerson = personService.getPersonById(id);
+        log.info("IIIIIDDDD: "+id);
+        log.info("optPerson: "+optPerson);
+        Person person = personMapper.fromOptional(optPerson);
+        PersonDto personDto = personMapper.toDto(person);
+        log.info("personDto: "+personDto);
+
+        return personDto;
+
+    }
 
     @PostMapping
     public ResponseEntity<?> createPerson(@RequestBody Person person) throws BusinessRuleException, UnknownHostException, MessagingException {
         // Convertir DTO a Entidad
 
-        PersonDto personDto = personService.createPerson(person);
         SystemDto systemDto = new SystemDto();
-        systemDto.setUid(personDto.getUid());
-        systemDto.setCreatedAt(personDto.getCreatedAt());
-        systemDto.setActualityAt(personDto.getCreatedAt());
+        systemDto.setUid(person.getUid());
+        systemDto.setCreatedAt(person.getCreatedAt());
+        systemDto.setActualityAt(person.getCreatedAt());
+        FormationDto formationDto = new FormationDto();
+        CharacterTrainingDto trainingDto = new CharacterTrainingDto();
+        if(person.getCurrentSituation().equals(Enum.CurrentSituation.vocational_training)) {
+            formationDto = businessTransactions.getFormation(VOCATIONAL_TRAINING);
+            trainingDto = personService.formationCreate(formationDto, trainingDto, person.getId());
+            trainingDto = businessTransactions.setTrainer(trainingDto);
+            log.info("TRAINING: "+trainingDto);
+            person.setAcademicXp(10);
+        } else if(person.getCurrentSituation().equals(Enum.CurrentSituation.high_school)) {
+            formationDto = businessTransactions.getFormation(HIGH_SCHOOL);
+            trainingDto = personService.formationCreate(formationDto, trainingDto, person.getId());
+            trainingDto = businessTransactions.setTrainer(trainingDto);
+            log.info("TRAINING: "+trainingDto);
+            person.setAcademicXp(15);
+        }
+
+        PersonDto personDto = personService.createPerson(person);
         systemDto = businessTransactions.setSystem(systemDto);
-        log.info("HA PASADO: "+ systemDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(personDto);
     }
 

@@ -24,6 +24,7 @@ public class FormationDto {
     private Enum.EducationLevel minEducationLevel;
     private Integer minAcademicLevel;
     private Integer minAcademicXp;
+    private Integer maxAcademicXp;
     private List<Enum.CareerInterest> allowedCareers;
 
     // ===== COSTE =====

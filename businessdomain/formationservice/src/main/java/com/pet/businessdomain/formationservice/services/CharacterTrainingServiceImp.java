@@ -1,11 +1,13 @@
 package com.pet.businessdomain.formationservice.services;
 
 import com.pet.businessdomain.formationservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.formationservice.dto.PersonDto;
 import com.pet.businessdomain.formationservice.entities.CharacterTraining;
 import com.pet.businessdomain.formationservice.entities.Formation;
 import com.pet.businessdomain.formationservice.exceptions.BusinessRuleException;
 import com.pet.businessdomain.formationservice.repository.FormationRepository;
 import com.pet.businessdomain.formationservice.repository.ICharacterTrainingRepository;
+import com.pet.businessdomain.formationservice.transactions.BusinessTransactions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,8 @@ import com.pet.businessdomain.formationservice.entities.enumentities.Enum;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,6 +28,8 @@ public class CharacterTrainingServiceImp implements ICharacterTrainingService{
     @Autowired
     private FormationRepository formationRepo;
 
+    @Autowired
+    private BusinessTransactions businessTransactions;
     // Todos los cursos del personaje
     public List<CharacterTraining> getTrainingsForCharacter(Long characterId) {
         return trainingRepo.findByCharacterId(characterId);
@@ -87,5 +93,35 @@ public class CharacterTrainingServiceImp implements ICharacterTrainingService{
         dto.setTrainingDifficulty(formation.getDifficulty());
 
         return dto;
+    }
+
+    @Override
+    public List<Formation> getAvailableCoursesForCharacter(Long characterId) {
+
+        PersonDto personDto = businessTransactions.getPerson(characterId);
+
+        List<Formation> allTrainings = formationRepo.findAllByActiveTrue();
+
+        List<CharacterTraining> listTraining =
+                trainingRepo.findByCharacterId(personDto.getId());
+
+        Set<Long> completedFormationIds = listTraining.stream()
+                .map(CharacterTraining::getTrainingId)
+                .collect(Collectors.toSet());
+
+        return allTrainings.stream()
+                .filter(training ->
+                        !completedFormationIds.contains(training.getId())
+                                && training.getCategory() != null
+                                && personDto.getCareerInterest() != null
+                                && training.getCategory() ==
+                                Enum.CareerInterest.valueOf(personDto.getCareerInterest().name())
+                                && personDto.getAcademicXp() != null
+                                && training.getMinAcademicXp() != null
+                                && training.getMaxAcademicXp() != null
+                                && personDto.getAcademicXp() >= training.getMinAcademicXp()
+                                && personDto.getAcademicXp() < training.getMaxAcademicXp()
+                )
+                .toList();
     }
 }

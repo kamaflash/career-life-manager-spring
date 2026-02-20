@@ -4,6 +4,7 @@
  */
 package com.pet.businessdomain.formationservice.repository;
 
+import com.pet.businessdomain.formationservice.entities.CharacterTraining;
 import com.pet.businessdomain.formationservice.entities.Formation;
 import com.pet.businessdomain.formationservice.entities.enumentities.Enum;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,6 @@ public interface FormationRepository extends JpaRepository<Formation, Long> {
     List<Formation> findByDifficultyAndActiveTrue(Enum.DifficultyLevel difficulty);
 
     List<Formation> findByTypeAndActiveTrue(Enum.TrainingType type);
-
     // ===== FILTROS COMBINADOS =====
 
     @Query("""
@@ -62,6 +62,6 @@ public interface FormationRepository extends JpaRepository<Formation, Long> {
                OR LOWER(f.description) LIKE LOWER(CONCAT('%', :text, '%')))
     """)
     Page<Formation> searchActiveFormations(String text, Pageable pageable);
-
+    List<Formation> findAllByActiveTrue();
 }
 

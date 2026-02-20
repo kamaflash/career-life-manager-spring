@@ -2,6 +2,7 @@ package com.pet.businessdomain.formationservice.transactions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.pet.businessdomain.formationservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.formationservice.dto.PersonDto;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -49,25 +50,8 @@ public class BusinessTransactions {
                 connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
             });
 
-    public List<JsonNode> getPet(Long uid) {
 
-        WebClient webClient = webClientBuilder
-                .clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://BUSINESSDOMAIN-PETSERVICE/api/pet")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/full")
-                        .queryParam("uid", uid)
-                        .build())
-                .retrieve()
-                .bodyToFlux(JsonNode.class)
-                .collectList()
-                .block();
-    }
-    public CharacterTrainingDto getPerson(Long id) {
+    public PersonDto getPerson(Long id) {
         try {
             WebClient webClient = webClientBuilder
                     .clientConnector(new ReactorClientHttpConnector(client))
@@ -76,20 +60,20 @@ public class BusinessTransactions {
                     .build();
 
             return webClient.get()
-                    .uri("/uid/{id}", id)
+                    .uri("/id/{id}", id)
                     .retrieve()
                     .onStatus(
                             status -> status.is4xxClientError() || status.is5xxServerError(),
                             response -> response.bodyToMono(String.class)
                                     .flatMap(body -> Mono.error(new RuntimeException(
-                                            "Error from Formation service: " + response.statusCode() + " - " + body
+                                            "Error from User service: " + response.statusCode() + " - " + body
                                     )))
                     )
-                    .bodyToMono(CharacterTrainingDto.class)
-                    .block(); // devuelve FormationDto directamente
+                    .bodyToMono(PersonDto.class)
+                    .block(); // devuelve UserDto directamente
 
         } catch (Exception e) {
-            System.err.println("Error fetching formation: " + e.getMessage());
+            System.err.println("Error fetching user: " + e.getMessage());
             return null; // o lanza excepción, según tu diseño
         }
     }

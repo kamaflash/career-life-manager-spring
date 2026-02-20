@@ -66,7 +66,7 @@ public class FormationController {
     // 🔍 OBTENER POR ID
     // =========================
     @GetMapping("/{id}")
-    public ResponseEntity<FormationDto> getFormationById(@PathVariable Long id)
+    public ResponseEntity<FormationDto> getFormationById(@PathVariable(name = "id") Long id)
             throws BusinessRuleException {
 
         Formation formation = formationRepository.findById(id)
@@ -83,7 +83,7 @@ public class FormationController {
     // 🔍 OBTENER POR CODE
     // =========================
     @GetMapping("/code/{code}")
-    public ResponseEntity<FormationDto> getFormationByCode(@PathVariable String code)
+    public ResponseEntity<FormationDto> getFormationByCode(@PathVariable(name = "code") String code)
             throws BusinessRuleException {
 
         Formation formation = formationRepository.findByCode(code)
@@ -160,7 +160,7 @@ public class FormationController {
     // =========================
     @PutMapping("/{id}")
     public ResponseEntity<FormationDto> updateFormation(
-            @PathVariable Long id,
+            @PathVariable(name = "id") Long id,
             @RequestBody FormationDto formationDto
     ) throws BusinessRuleException {
 
@@ -173,10 +173,10 @@ public class FormationController {
     // =========================
     @GetMapping("/available")
     public ResponseEntity<List<FormationDto>> getAvailableFormations(
-            @RequestParam com.pet.businessdomain.formationservice.entities.enumentities.Enum.EducationLevel educationLevel,
-            @RequestParam Integer academicLevel,
-            @RequestParam Integer academicXp,
-            @RequestParam(required = false) Enum.CareerInterest careerInterest
+            @RequestParam(name = "educationLevel") Enum.EducationLevel educationLevel,
+            @RequestParam(name = "academicLevel") Integer academicLevel,
+            @RequestParam(name = "academicXp") Integer academicXp,
+            @RequestParam(name = "careerInterest", required = false) Enum.CareerInterest careerInterest
     ) {
         List<Formation> formations = formationRepository.findAvailableFormations(
                 educationLevel,
@@ -192,11 +192,17 @@ public class FormationController {
     // ❌ DESACTIVAR FORMACIÓN
     // =========================
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deactivateFormation(@PathVariable Long id)
+    public ResponseEntity<?> deactivateFormation(@PathVariable(name = "id") Long id)
             throws BusinessRuleException {
 
         formationService.deactivateFormation(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<?> deleteAll() {
+        formationRepository.deleteAll();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Hecho");
     }
 
 

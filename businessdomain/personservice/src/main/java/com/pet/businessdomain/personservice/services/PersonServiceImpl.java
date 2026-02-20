@@ -4,8 +4,11 @@
  */
 package com.pet.businessdomain.personservice.services;
 
+import com.pet.businessdomain.personservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.personservice.dto.FormationDto;
 import com.pet.businessdomain.personservice.dto.PersonDto;
 import com.pet.businessdomain.personservice.entities.Person;
+import com.pet.businessdomain.personservice.entities.enumentities.EnumFormation;
 import com.pet.businessdomain.personservice.exceptions.BusinessRuleException;
 
 import java.time.LocalDateTime;
@@ -148,7 +151,7 @@ public class PersonServiceImpl implements PersonService {
         // ===== ECONOMÍA =====
         person.setEconomicSupport(personDto.getEconomicSupport());
         person.setMonthlyIncome(personDto.getMonthlyIncome());
-        person.setIncomeSources(personDto.getIncomeSources());
+        person.setIncomes(personDto.getIncomes());
         person.setSavings(personDto.getSavings());
         person.setDebts(personDto.getDebts());
 
@@ -176,4 +179,19 @@ public class PersonServiceImpl implements PersonService {
         // Implementation here
     }
 
+    public CharacterTrainingDto formationCreate(FormationDto formationDto, CharacterTrainingDto trainingDto, Long id) {
+        trainingDto.setCharacterId(id);
+        trainingDto.setTrainingId(formationDto.getId());
+        trainingDto.setTrainingName(formationDto.getName());
+        trainingDto.setTrainingType(formationDto.getType());
+        trainingDto.setTrainingDifficulty(formationDto.getDifficulty());
+        trainingDto.setStatus(EnumFormation.TrainingStatus.IN_PROGRESS);
+        trainingDto.setProgress(0);
+        trainingDto.setInvestedHours(0);
+        trainingDto.setStartedAt(LocalDateTime.now());
+        trainingDto.setAcademicXpGained(formationDto.getAcademicXpReward());
+        trainingDto.setApplied(formationDto.getActive());
+
+        return trainingDto;
+    }
 }

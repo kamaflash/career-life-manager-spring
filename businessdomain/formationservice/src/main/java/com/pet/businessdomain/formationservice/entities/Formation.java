@@ -49,6 +49,7 @@ public class Formation {
 
     private Integer minAcademicLevel;
     private Integer minAcademicXp;
+    private Integer maxAcademicXp;
 
     @ElementCollection
     private List<Enum.CareerInterest> allowedCareers;
@@ -66,7 +67,5 @@ public class Formation {
 
     private Boolean repeatable;
     private Boolean active;
-
-
 
 }

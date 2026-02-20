@@ -82,10 +82,8 @@ public class UserServiceImpl implements UserService {
 
         if (user != null) {
             UserDto dto = userMapper.toDto(user);
-            log.info("FUERA: "+dto.getPersons());
 
             dto.setPersons(businessTransactions.getPerson(dto.getId()));
-            log.info("DENTRO: "+dto.getPersons());
             return dto;
         } else {
             BusinessRuleException businessRuleException = new BusinessRuleException("0002", "Error validación. Transacion no localizada. ", HttpStatus.PRECONDITION_FAILED);

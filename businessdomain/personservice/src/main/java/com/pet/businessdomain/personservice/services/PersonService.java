@@ -4,6 +4,8 @@
  */
 package com.pet.businessdomain.personservice.services;
 
+import com.pet.businessdomain.personservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.personservice.dto.FormationDto;
 import com.pet.businessdomain.personservice.dto.PersonDto;
 import com.pet.businessdomain.personservice.entities.Person;
 import com.pet.businessdomain.personservice.exceptions.BusinessRuleException;
@@ -25,5 +27,5 @@ public interface PersonService {
     void deletePerson(Long id);
     PersonDto getFull(Long uid) throws BusinessRuleException;
     List<PersonDto> getFullList(Long id) throws BusinessRuleException;
-
+    CharacterTrainingDto formationCreate(FormationDto formationDto, CharacterTrainingDto trainingDto, Long id);
 }

@@ -206,8 +206,6 @@ public class UserController {
 
         if (optUser.isPresent()) {
             User user = optUser.get();
-            System.out.println(passwordEncoder.getClass().getName());
-            System.out.println(user.getPassword());
             String raw = login.getPassword().trim();
 
             if (passwordEncoder.matches(raw, user.getPassword())) {

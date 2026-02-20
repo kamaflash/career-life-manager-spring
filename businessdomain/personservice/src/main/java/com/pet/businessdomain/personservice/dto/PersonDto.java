@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.pet.businessdomain.personservice.entities.CharacterExpenses;
+import com.pet.businessdomain.personservice.entities.CharacterIncomes;
 import com.pet.businessdomain.personservice.entities.enumentities.Enum;
 import lombok.Data;
 
@@ -48,7 +49,7 @@ public class PersonDto {
     // ===== ECONOMÍA =====
     private Enum.EconomicSupport economicSupport;
     private Double monthlyIncome;
-    private List<String> incomeSources;
+    private CharacterIncomes incomes;
     private Double savings;
     private Double debts;
 

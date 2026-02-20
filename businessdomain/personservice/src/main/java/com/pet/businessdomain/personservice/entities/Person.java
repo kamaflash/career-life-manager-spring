@@ -12,151 +12,148 @@ import java.util.List;
 @Data
 public class Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long uid;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    // ===== IDENTIDAD =====
-    private String fullName;
-    private Integer age;
-    private String birthDate;
-    private String city;
+        private Long uid;
 
-    @Enumerated(EnumType.STRING)
-    private Enum.Gender gender;
+        // ===== IDENTIDAD =====
+        private String fullName;
+        private Integer age;
+        private String birthDate;
+        private String city;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+        @Enumerated(EnumType.STRING)
+        private Enum.Gender gender;
 
-    // ===== SITUACIÓN VITAL =====
-    @Enumerated(EnumType.STRING)
-    private Enum.CurrentSituation currentSituation;
+        @Column(nullable = false, updatable = false)
+        private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Enumerated(EnumType.STRING)
-    private Enum.FamilySituation familySituation;
+        // ===== SITUACIÓN VITAL =====
+        @Enumerated(EnumType.STRING)
+        private Enum.CurrentSituation currentSituation;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_family_expectations",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> familyExpectations;
+        @Enumerated(EnumType.STRING)
+        private Enum.FamilySituation familySituation;
 
-    // ===== EDUCACIÓN =====
-    @Enumerated(EnumType.STRING)
-    private Enum.EducationLevel educationLevel;
+        // ===== EXPECTATIVAS FAMILIARES =====
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_family_expectations",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "expectation")
+        private List<String> familyExpectations;
 
-    private String educationField;
-    private String educationSpecialization;
+        // ===== EDUCACIÓN =====
+        @Enumerated(EnumType.STRING)
+        private Enum.EducationLevel educationLevel;
 
-    @Enumerated(EnumType.STRING)
-    private Enum.AcademicPerformance academicPerformance;
+        private String educationField;
+        private String educationSpecialization;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_education_gaps",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> educationGaps;
+        @Enumerated(EnumType.STRING)
+        private Enum.AcademicPerformance academicPerformance;
 
-    // ===== PROFESIONAL / FUTURO =====
-    @Enumerated(EnumType.STRING)
-    private Enum.CareerInterest careerInterest;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_education_gaps",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "education_gap")
+        private List<String> educationGaps;
 
-    @Enumerated(EnumType.STRING)
-    private Enum.Aspiration aspiration;
+        // ===== PROFESIONAL / FUTURO =====
+        @Enumerated(EnumType.STRING)
+        private Enum.CareerInterest careerInterest;
 
-    @Enumerated(EnumType.STRING)
-    private Enum.AvailableTime availableTime;
+        @Enumerated(EnumType.STRING)
+        private Enum.Aspiration aspiration;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_learning_resources",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> learningResources;
+        @Enumerated(EnumType.STRING)
+        private Enum.AvailableTime availableTime;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_technical_skills",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> technicalSkills;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_learning_resources",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "learning_resource")
+        private List<String> learningResources;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_strengths",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> strengths;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_technical_skills",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "technical_skill")
+        private List<String> technicalSkills;
 
-    // ===== ECONOMÍA =====
-    @Enumerated(EnumType.STRING)
-    private Enum.EconomicSupport economicSupport;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_strengths",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "strength")
+        private List<String> strengths;
 
-    private Double monthlyIncome;
+        // ===== ECONOMÍA =====
+        @Enumerated(EnumType.STRING)
+        private Enum.EconomicSupport economicSupport;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_income_sources",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> incomeSources;
+        private Double monthlyIncome;
 
-    private Double savings;
-    private Double debts;
+        @Embedded
+        private CharacterIncomes incomes;
 
-    @Embedded
-    private CharacterExpenses expenses;
+        private Double savings;
+        private Double debts;
 
-    // ===== RETOS, APOYO Y METAS =====
-    @ElementCollection
-    @CollectionTable(
-            name = "person_challenges",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> challenges;
+        @Embedded
+        private CharacterExpenses expenses;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_support_system",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> supportSystem;
+        // ===== RETOS, APOYO Y METAS =====
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_challenges",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "challenge")
+        private List<String> challenges;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_long_term_goals",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> longTermGoals;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_support_system",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "support_member")
+        private List<String> supportSystem;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "person_short_term_goals",
-            joinColumns = @JoinColumn(name = "person_id")
-    )
-    @Column(name = "value")
-    private List<String> shortTermGoals;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_long_term_goals",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "long_term_goal")
+        private List<String> longTermGoals;
 
-    // ===== EXPERIENCIA =====
-    private Integer academicXp = 0;
-    private Integer workXp = 0;
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(
+                name = "person_short_term_goals",
+                joinColumns = @JoinColumn(name = "person_id")
+        )
+        @Column(name = "short_term_goal")
+        private List<String> shortTermGoals;
 
-    // ===== NIVELES =====
-    @Enumerated(EnumType.STRING)
-    private Enum.ProgressLevel academicLevel;
+        // ===== EXPERIENCIA =====
+        private Integer academicXp = 0;
+        private Integer workXp = 0;
 
-    @Enumerated(EnumType.STRING)
-    private Enum.ProgressLevel workLevel;
-}
+        // ===== NIVELES =====
+        @Enumerated(EnumType.STRING)
+        private Enum.ProgressLevel academicLevel;
+
+        @Enumerated(EnumType.STRING)
+        private Enum.ProgressLevel workLevel;
+    }

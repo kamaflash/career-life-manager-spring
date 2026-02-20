@@ -1,6 +1,8 @@
 package com.pet.businessdomain.personservice.transactions;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.pet.businessdomain.personservice.dto.CharacterTrainingDto;
+import com.pet.businessdomain.personservice.dto.FormationDto;
 import com.pet.businessdomain.personservice.dto.SystemDto;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
@@ -61,6 +63,32 @@ public class BusinessTransactions {
                 .bodyValue(systemDto)   // ✅ el DTO va en el body
                 .retrieve()
                 .bodyToMono(SystemDto.class) // ✅ recibes un solo objeto
+                .block();
+    }
+    public FormationDto getFormation(Long id) {
+        WebClient webClient = webClientBuilder
+                .clientConnector(new ReactorClientHttpConnector(client))
+                .baseUrl("http://BUSINESSDOMAIN-FORMATIONSERVICE/api/formations")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        return webClient.get()
+                .uri("/{id}", id)
+                .retrieve()
+                .bodyToMono(FormationDto.class)
+                .block();
+    }
+    public CharacterTrainingDto setTrainer(CharacterTrainingDto trainingDto) {
+        WebClient webClient = webClientBuilder
+                .clientConnector(new ReactorClientHttpConnector(client))
+                .baseUrl("http://BUSINESSDOMAIN-FORMATIONSERVICE/api/trainer")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        return webClient.post()
+                .bodyValue(trainingDto)   // ✅ el DTO va en el body
+                .retrieve()
+                .bodyToMono(CharacterTrainingDto.class) // ✅ recibes un solo objeto
                 .block();
     }
 
